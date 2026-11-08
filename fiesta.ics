@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Familia//Invitacion//ES
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:fiesta-20270116@invitacion
+DTSTAMP:20261108T030000Z
+DTSTART:20270116T230000Z
+DTEND:20270117T050000Z
+SUMMARY:Fiesta sorpresa 🤫
+LOCATION:Club Paradise\, 272 Broadway Street\, Lawrence\, MA
+DESCRIPTION:Por favor lleguen a las 6:00 p.m.\n¡Es una sorpresa! Por favor
+ \, no comenten nada.
+END:VEVENT
+END:VCALENDAR
