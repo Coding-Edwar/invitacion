@@ -133,7 +133,7 @@
   .line .k { display: block; font: 900 11px/1.2 var(--serif); letter-spacing: .36em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
   .line .v { display: block; font: italic 700 22px/1.3 var(--serif); color: var(--cream); }
   .line .s { display: block; font: 400 17px/1.5 var(--serif); color: var(--muted); }
-  .line p.s { margin: 0; }
+  .line p.s, .line p.v { margin: 0; }
   .maplink {
     display: inline-flex; align-items: center; gap: 8px; min-height: 44px; margin-top: 6px;
     font: 700 16px/1 var(--serif); color: var(--gold); text-decoration: underline; text-underline-offset: 5px;
@@ -143,6 +143,7 @@
   .callabel { flex-basis: 100%; text-align: center; font: italic 400 16px/1.4 var(--serif); color: var(--muted); }
   .callinks .maplink { gap: 10px; }
   .lugar { display: block; margin: 12px 0 0; }
+  .g-lines { margin-top: 26px; }
   .lugar img { display: block; width: 100%; height: auto; border: 1px solid var(--rule); }
   .calicon { flex: none; width: 30px; height: 30px; border-radius: 7px; box-shadow: 0 2px 6px rgba(0,0,0,.5); }
 
@@ -159,6 +160,8 @@
   .rsvp h2 { font: 900 28px/1.2 var(--serif); margin: 10px 0 4px; }
   .hint { font: italic 400 17px/1.5 var(--serif); color: var(--muted); margin: 0 0 18px; }
 
+  html { touch-action: manipulation; }
+  button, a, input, .stepper { touch-action: manipulation; }
   .btn {
     display: flex; align-items: center; justify-content: space-between; gap: 12px;
     width: 100%; min-height: 66px; padding: 16px 20px;
@@ -200,6 +203,18 @@
   .stepper button:active { background: rgba(243,234,212,.12); }
   .stepper button[disabled] { opacity: .3; }
   .stepper output { text-align: center; font: 900 136px/1 var(--display); letter-spacing: -.03em; }
+  .campos { margin: 0 0 22px; }
+  .campo { display: block; margin-top: 18px; }
+  .campo .k { display: block; font: 900 12px/1.3 var(--serif); letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+  .campo .ayuda { display: block; font: italic 400 16px/1.45 var(--serif); color: var(--muted); margin: -2px 0 8px; }
+  .campo input {
+    display: block; width: 100%; min-height: 60px; padding: 12px 14px;
+    font: 400 20px/1.3 var(--serif); color: var(--cream);
+    background: var(--paper); border: 2px solid var(--muted); border-radius: 0;
+    -webkit-appearance: none; appearance: none;
+  }
+  .campo input:focus { outline: 3px solid var(--gold); outline-offset: 2px; border-color: var(--gold); }
+  .campo input[aria-invalid="true"] { border-color: var(--err); }
   .stepper-label { text-align: center; font: 900 11px/1.2 var(--serif); letter-spacing: .36em; color: var(--gold); margin: -18px 0 26px; }
 
   /* ---------- Gracias ---------- */
@@ -276,12 +291,17 @@
         <span class="s">272 Broadway Street, Lawrence, MA</span>
       </div>
       <div class="line">
-        <span class="k">Código de vestimenta</span>
-        <span class="v">Elegante – Semiformal</span>
+        <span class="k">Solo adultos</span>
+        <p class="v">Con cariño les avisamos que esta celebración es solo para adultos.</p>
       </div>
-      <div class="line">
+      <!-- Vestimenta y Regalos: solo para quienes ya confirmaron que sí (también aparecen en Gracias). -->
+      <div class="line solo-si" hidden>
+        <span class="k">Vestimenta</span>
+        <p class="v">Les pedimos vestir elegante (semiformal).</p>
+      </div>
+      <div class="line solo-si" hidden>
         <span class="k">Regalos</span>
-        <p class="s">Su presencia es nuestro mejor regalo. Si desean tener un detalle con el festejado, un sobre será muy apreciado.</p>
+        <p class="v">Su presencia es nuestro mejor regalo. Si desean tener un detalle con el festejado, un sobre será muy apreciado.</p>
       </div>
     </div>
 
@@ -324,7 +344,7 @@
   <section id="s-cuantos" class="fade" hidden>
     <div class="mast"><span>R.S.V.P.</span><span>16 · Ene · 2027</span></div>
     <h1 class="big-script gold-text" tabindex="-1">¡Qué alegría!</h1>
-    <p class="q">¿Cuántas personas vienen en total?</p>
+    <p class="q">¿Cuántos adultos vienen en total?</p>
     <p class="hint">Cuéntense ustedes también.</p>
     <div class="stepper">
       <button type="button" data-action="menos" aria-label="Una persona menos">−</button>
@@ -332,6 +352,17 @@
       <button type="button" data-action="mas" aria-label="Una persona más">+</button>
     </div>
     <p class="stepper-label" id="personas-label">PERSONA</p>
+    <div class="campos">
+      <label class="campo" for="nombre">
+        <span class="k">Nombre de quien confirma</span>
+        <input id="nombre" type="text" autocomplete="name" autocapitalize="words" maxlength="80" enterkeyhint="next">
+      </label>
+      <label class="campo" for="contacto">
+        <span class="k">Número de WhatsApp</span>
+        <span class="ayuda">Confirmen o corrijan el número donde prefieren recibir mensajes.</span>
+        <input id="contacto" type="tel" inputmode="tel" autocomplete="tel" maxlength="22" enterkeyhint="send">
+      </label>
+    </div>
     <button class="btn btn-solid" type="button" data-action="enviar" id="btn-enviar">Enviar confirmación <span class="arrow">→</span></button>
     <p class="error" id="error-si" role="alert" hidden></p>
     <button class="btn-text" type="button" data-action="volver">← Volver</button>
@@ -360,6 +391,16 @@
            href="https://www.google.com/maps/search/?api=1&query=Club%20Paradise%2C%20272%20Broadway%20St%2C%20Lawrence%2C%20MA">Ver en el mapa</a>
         <a class="lugar" target="_blank" rel="noopener"
            href="https://www.google.com/maps/search/?api=1&query=Club%20Paradise%2C%20272%20Broadway%20St%2C%20Lawrence%2C%20MA"><img src="lugar.jpg" width="1290" height="430" alt="Fachada de Club Paradise, 272 Broadway Street"></a>
+      </div>
+      <div class="lines g-lines">
+      <div class="line">
+        <span class="k">Vestimenta</span>
+        <p class="v">Les pedimos vestir elegante (semiformal).</p>
+      </div>
+      <div class="line">
+        <span class="k">Regalos</span>
+        <p class="v">Su presencia es nuestro mejor regalo. Si desean tener un detalle con el festejado, un sobre será muy apreciado.</p>
+      </div>
       </div>
     </div>
     <div id="g-no">
@@ -407,8 +448,8 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbwbvuHogcdl2JJPHE5DoWr0
     if (DEMO) {
       await wait(500);
       if (code === 'NOEXISTE') return { ok: false, error: 'codigo' };
-      return { ok: true, estimado: 4, respuesta: state.demoRespuesta || null,
-               fechaLimite: '15 de diciembre', cerrado: params.get('cerrado') === '1' };
+      return { ok: true, estimado: 4, respuesta: state.demoRespuesta || null, telefono: '(978) 555-0123',
+               fechaLimite: '18 de diciembre', cerrado: params.get('cerrado') === '1' };
     }
     const res = await fetch(API_URL + '?codigo=' + encodeURIComponent(code), { signal: timeout(25000) });
     return res.json();
@@ -418,8 +459,10 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbwbvuHogcdl2JJPHE5DoWr0
     if (DEMO) {
       await wait(700);
       if (params.get('fallar') === '1') throw new Error('demo');
-      state.demoRespuesta = { asistira: body.asistira, personas: body.personas };
-      return { ok: true, asistira: body.asistira, personas: body.personas };
+      const r = { ok: true, asistira: body.asistira, personas: body.personas };
+      if (body.asistira === 'si') { r.nombre = body.nombre; r.contacto = body.contacto; }
+      state.demoRespuesta = Object.assign({}, r);
+      return r;
     }
     const res = await fetch(API_URL, {
       method: 'POST',
@@ -449,6 +492,7 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbwbvuHogcdl2JJPHE5DoWr0
     $('rsvp-estado').hidden = d.cerrado ? !r : (!r || preguntar);
     $('rsvp-pregunta').hidden = d.cerrado || (r && !preguntar);
     $('error-no').hidden = true;
+    document.querySelectorAll('#s-invitacion .solo-si').forEach(el => { el.hidden = !(r && r.asistira === 'si'); });
     if (r) {
       $('estado-k').textContent = r.asistira === 'si' ? 'ASISTIRÁN' : 'NO PODRÁN ASISTIR';
       $('estado-v').textContent = r.asistira === 'si'
@@ -481,6 +525,26 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbwbvuHogcdl2JJPHE5DoWr0
       state.data.fechaLimite + '.';
   }
 
+  /* ---------- Nombre y número ---------- */
+  function validarCampos() {
+    const nombre = $('nombre').value.replace(/\s+/g, ' ').trim();
+    let d = $('contacto').value.replace(/\D/g, '');
+    if (d.length === 11 && d.charAt(0) === '1') d = d.slice(1);
+    const telOk = d.length === 10 || (d.length >= 11 && d.length <= 15);
+    const malo = (id, msg) => {
+      $(id).setAttribute('aria-invalid', 'true');
+      $('error-si').textContent = msg;
+      $('error-si').hidden = false;
+      $(id).focus();
+      return null;
+    };
+    $('nombre').removeAttribute('aria-invalid');
+    $('contacto').removeAttribute('aria-invalid');
+    if (nombre.length < 2) return malo('nombre', 'Por favor escriban el nombre de quien confirma.');
+    if (!telOk) return malo('contacto', 'Revisen el número de WhatsApp (10 dígitos, por ejemplo 978 555 0123).');
+    return { nombre: nombre, contacto: $('contacto').value.trim() };
+  }
+
   /* ---------- Envío ---------- */
   async function enviar(asistira) {
     if (state.sending) return;
@@ -488,19 +552,27 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbwbvuHogcdl2JJPHE5DoWr0
     const err = asistira === 'si' ? $('error-si') : $('error-no');
     const html = btn.innerHTML;
     err.hidden = true;
+    const extra = {};
+    if (asistira === 'si') {
+      const f = validarCampos();
+      if (!f) return;
+      extra.nombre = f.nombre; extra.contacto = f.contacto;
+    }
     state.sending = true;
     btn.disabled = true;
     btn.textContent = 'Enviando…';
     try {
-      const res = await apiPost({ asistira, personas: asistira === 'si' ? state.personas : 0 });
+      const res = await apiPost(Object.assign({ asistira, personas: asistira === 'si' ? state.personas : 0 }, extra));
       if (!res || !res.ok) {
         const msg = {
           cerrado: 'La fecha para confirmar ya pasó. Comuníquense con la persona que los invitó.',
           codigo: 'No encontramos su invitación. Comuníquense con la persona que los invitó.',
+          datos: 'Revisen el nombre y el número de WhatsApp e intenten otra vez.',
         }[res && res.error] || 'No pudimos guardar su respuesta. Por favor intenten otra vez.';
         throw Object.assign(new Error(msg), { friendly: true });
       }
-      state.data.respuesta = { asistira: res.asistira, personas: res.personas };
+      state.data.respuesta = Object.assign({}, state.data.respuesta, { asistira: res.asistira, personas: res.personas },
+        res.asistira === 'si' ? { nombre: res.nombre, contacto: res.contacto } : {});
       renderInvitacion(false);
       renderGracias(state.data.respuesta);
       show('gracias');
@@ -539,6 +611,12 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbwbvuHogcdl2JJPHE5DoWr0
         const r = state.data.respuesta;
         const est = state.data.estimado > 0 ? state.data.estimado : 1;
         setPersonas(r && r.asistira === 'si' && r.personas > 0 ? r.personas : est);
+        if (!state.camposListos) {   // fill once; keep whatever they typed if they go back and forth
+          $('nombre').value = (r && r.nombre) || '';
+          $('contacto').value = (r && r.contacto) || state.data.telefono || '';
+          state.camposListos = true;
+        }
+        ['nombre', 'contacto'].forEach(id => $(id).removeAttribute('aria-invalid'));
         $('error-si').hidden = true;
         show('cuantos');
         break;
@@ -552,6 +630,12 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbwbvuHogcdl2JJPHE5DoWr0
       case 'ver-invitacion': renderInvitacion(false); show('invitacion'); break;
       case 'reintentar':     cargar(); break;
     }
+  });
+
+  document.addEventListener('keydown', ev => {
+    if (ev.key !== 'Enter') return;
+    if (ev.target.id === 'nombre') { ev.preventDefault(); $('contacto').focus(); }
+    else if (ev.target.id === 'contacto') { ev.preventDefault(); enviar('si'); }
   });
 
   cargar();
